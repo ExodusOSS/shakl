@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react'
 import { View } from 'react-native'
-import { create, act } from 'react-test-renderer'
+import { act, create } from 'react-test-renderer'
 
 import s from '../src/rn'
 
@@ -21,6 +21,7 @@ it('does not re-render memoized child when parent re-renders with same style', (
     )
   }
 
+  // eslint-disable-next-line no-unused-vars
   let root
   act(() => {
     root = create(<Parent />)
@@ -34,6 +35,7 @@ it('does not re-render memoized child when parent re-renders with same style', (
     if (args[0] === View && args[1]?.style?.flex === 1) {
       childRenderCount++
     }
+
     return originalCreateElement(...args)
   }
 
@@ -76,6 +78,7 @@ it('does not re-render memoized child when dynamic style resolves to same values
     if (args[0] === View && args[1]?.style?.padding === 10) {
       childRenderCount++
     }
+
     return originalCreateElement(...args)
   }
 

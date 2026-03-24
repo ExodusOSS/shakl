@@ -7,10 +7,12 @@ const shallowEqual = (a: any, b: any): boolean => {
   if (Array.isArray(a)) {
     return Array.isArray(b) && a.length === b.length && a.every((v, i) => shallowEqual(v, b[i]))
   }
+
   if (typeof a === 'object') {
     const keysA = Object.keys(a)
     return keysA.length === Object.keys(b).length && keysA.every((k) => a[k] === b[k])
   }
+
   return false
 }
 
@@ -19,6 +21,7 @@ const useStableStyle = (style: any) => {
   if (!shallowEqual(ref.current, style)) {
     ref.current = style
   }
+
   return ref.current
 }
 
