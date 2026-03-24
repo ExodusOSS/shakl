@@ -9,6 +9,7 @@ const config = [
     },
     rules: {
       'unicorn/expiring-todo-comments': 'off',
+      'sonarjs/no-one-iteration-loop': 'off',
     },
   },
   {

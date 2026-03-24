@@ -17,7 +17,7 @@ it('works with reanimated styles', () => {
 
   const { getByTestId } = render(<AnimatedComponent />)
   const element = getByTestId('foo')
-  expect(element.props.style).toEqual({ opacity: 0.5, flex: 1 })
+  expect(element.props.style).toEqual([{ flex: 1, opacity: 0 }, { opacity: 0.5 }, {}])
   expect(element).toHaveAnimatedStyle({ opacity: 0.5 })
 })
 
@@ -34,7 +34,12 @@ it('works with reanimated styles when use array', () => {
 
   const { getByTestId } = render(<AnimatedComponent />)
   const element = getByTestId('foo')
-  expect(element.props.style).toEqual({ opacity: 0.5, flex: 1, width: 50 })
+  expect(element.props.style).toEqual([
+    { flex: 1, opacity: 0 },
+    { opacity: 0.5 },
+    { width: 50 },
+    {},
+  ])
   expect(element).toHaveAnimatedStyle({ opacity: 0.5 })
 })
 it('works with reanimated styles when use array and some style is undefined', () => {
@@ -50,6 +55,11 @@ it('works with reanimated styles when use array and some style is undefined', ()
 
   const { getByTestId } = render(<AnimatedComponent />)
   const element = getByTestId('foo')
-  expect(element.props.style).toEqual({ opacity: 0.5, flex: 1, width: 50 })
+  expect(element.props.style).toEqual([
+    { flex: 1, opacity: 0 },
+    { opacity: 0.5 },
+    { width: 50 },
+    {},
+  ])
   expect(element).toHaveAnimatedStyle({ opacity: 0.5 })
 })
