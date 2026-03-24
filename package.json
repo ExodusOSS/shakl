@@ -1,5 +1,9 @@
 {
   "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "yarn@1.22.22",
   "name": "shakl",
   "description": "A utility to create styled components in React Native.",
   "version": "0.0.22",
