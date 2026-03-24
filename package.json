@@ -6,7 +6,7 @@
   "packageManager": "yarn@1.22.22",
   "name": "shakl",
   "description": "A utility to create styled components in React Native.",
-  "version": "0.0.22",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "react-native": "lib/rn.js",
   "types": "lib/rn.d.ts",
