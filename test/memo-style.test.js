@@ -66,6 +66,7 @@ it('does not re-render memoized child when dynamic style resolves to same values
     )
   }
 
+  // eslint-disable-next-line no-unused-vars
   let root
   act(() => {
     root = create(<Parent />)
