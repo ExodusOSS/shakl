@@ -49,8 +49,7 @@ type WithOptional<T, K extends keyof any> = Omit<T, K> & {
 
 type Attrs<A extends object> = ((props: Partial<A>) => Partial<A>) | Partial<A>
 type ComponentStyle<P extends object, SP extends object, S extends object> =
-  | ((props: Partial<P> & SP) => S)
-  | S
+  ((props: Partial<P> & SP) => S) | S
 
 const DEFAULT_OMIT_PROPS = ['theme']
 

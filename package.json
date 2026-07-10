@@ -62,5 +62,8 @@
   "files": [
     "lib"
   ],
-  "prettier": "@exodus/prettier"
+  "prettier": "@exodus/prettier",
+  "resolutions": {
+    "eslint-plugin-sonarjs": "3.0.2"
+  }
 }
