@@ -4,8 +4,12 @@ import React, { Text } from 'react-native'
 import type { LinearGradientProps } from 'react-native-linear-gradient'
 import LinearGradient from 'react-native-linear-gradient'
 
-import styled from '../src/index'
+import styled, { ThemeProvider, useTheme } from '../src/index'
 import extendedStyled from '../src/rn'
+
+const ThemedText = styled(Text)(({ theme }: { theme?: { color: string } }) => ({
+  color: theme?.color,
+}))
 
 const StyledText = styled(Text)(({ transparent }: { transparent?: boolean; color: string }) => ({
   flex: 1,
@@ -68,8 +72,9 @@ const DefaultGradient = extendedWithLinear.LinearGradient({}).attrs({
 
 const MyScreen = () => {
   const ref = useRef()
+  const currentTheme = useTheme()
   return (
-    <>
+    <ThemeProvider theme={currentTheme ?? { color: 'red' }}>
       <StyledText color="red" transparent>
         Hello Transparent World
       </StyledText>
@@ -128,6 +133,11 @@ const MyScreen = () => {
       <DangerGradient />
       {/* but they can be provided */}
       <DefaultGradient colors={['blue', 'green']} />
-    </>
+
+      {/* theme is injected from context, so no prop is required */}
+      <ThemedText>Hello Themed World</ThemedText>
+      {/* an explicitly passed theme still type-checks and overrides context */}
+      <ThemedText theme={{ color: 'blue' }}>Hello Themed World</ThemedText>
+    </ThemeProvider>
   )
 }

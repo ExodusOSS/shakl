@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import type { StyleProp } from 'react-native'
 
 const shallowEqual = (a: any, b: any): boolean => {
@@ -49,10 +49,23 @@ type WithOptional<T, K extends keyof any> = Omit<T, K> & {
 
 type Attrs<A extends object> = ((props: Partial<A>) => Partial<A>) | Partial<A>
 type ComponentStyle<P extends object, SP extends object, S extends object> =
-  | ((props: Partial<P> & SP) => S)
-  | S
+  ((props: Partial<P> & SP) => S) | S
 
 const DEFAULT_OMIT_PROPS = ['theme']
+
+export const ThemeContext = React.createContext<any>(undefined)
+
+export interface ThemeProviderProps {
+  theme: any
+  children?: React.ReactNode
+}
+
+export const ThemeProvider = ({ theme, children }: ThemeProviderProps) =>
+  React.createElement(ThemeContext.Provider, { value: theme }, children)
+
+export const useTheme = () => useContext(ThemeContext)
+
+const useNoTheme = () => {}
 
 export type StyledComponent<P extends object, S extends object> = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<P & StyledProps<S> & { children?: React.ReactNode }> &
@@ -81,15 +94,26 @@ const styled =
       ...opts
     } = config
 
+    // decided once per component type so hook order stays stable across renders:
+    // components with static styles and static attrs never subscribe to the context
+    const useComponentTheme =
+      typeof componentStyle === 'function' || typeof opts.attrs === 'function'
+        ? useTheme
+        : useNoTheme
+
     const Styled = React.forwardRef<any, P & StyledProps<S> & { children?: React.ReactNode }>(
       (props, ref) => {
+        const theme = useComponentTheme()
         const { childRef, ...restProps } = props
         const { comp, child, childProps = Object.create(null) } = opts
+
+        // an explicitly passed `theme` prop (inside restProps) overrides the context value
+        const styleProps = theme === undefined ? restProps : { theme, ...restProps }
 
         const attrs = opts.attrs
         const attrsResult = attrs
           ? typeof attrs === 'function'
-            ? attrs(restProps as P)
+            ? attrs(styleProps as P)
             : attrs
           : Object.create(null)
         const children = props.children || attrsResult.children
@@ -98,7 +122,7 @@ const styled =
           ...factoryStyle,
           ...(attrsResult as any).style,
           ...(typeof componentStyle === 'function'
-            ? componentStyle(restProps as P & SP)
+            ? componentStyle(styleProps as P & SP)
             : componentStyle),
         }
 

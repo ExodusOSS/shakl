@@ -11,6 +11,9 @@ import type {
 } from 'react-native'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
+export { ThemeContext, ThemeProvider, useTheme } from './index'
+export type { ThemeProviderProps } from './index'
+
 const extended = Object.assign(styled, {
   View: styled<ViewProps, ViewStyle>(View, { name: 'styled(View)' }),
   Text: styled<TextProps, TextStyle>(Text, { name: 'styled(Text)' }),

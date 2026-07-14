@@ -8,6 +8,7 @@
 
 - Exposes basic [primitives](#primitives) such as `View`, `Text` and `Touchable`,
 - Supports static and [dynamic styles](#dynamic-styles) (based on props).
+- Supports [theming](#theming): dynamic styles receive a `theme` prop from a `ThemeProvider`.
 - Supports component extension using [`extend()`](#extending-styles) and [`attrs()`](#custom-props).
 - Supports component composition using [`withComponent()`](#wrapping-another-component) and [`withChild()`](#wrapping-a-child).
 - Uses regular inline styles under the hood (performance boost).
@@ -62,6 +63,31 @@ const Foo = styled.View((props) => ({ padding: props.padded ? 10 : 0 }))
 <Foo /> // <View style={{ padding: 0 }} />
 <Foo padded /> // <View style={{ padding: 10 }} />
 ```
+
+### Theming
+
+Mount a `ThemeProvider` and every dynamic style receives the theme through the `theme` prop.
+
+```js
+import styled, { ThemeProvider, useTheme } from 'shakl'
+
+const theme = { primary: 'blue' }
+
+const Title = styled.Text(({ theme }) => ({ color: theme.primary }))
+
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <Title>Hello</Title>
+  </ThemeProvider>
+)
+```
+
+- Function styles and function `attrs()` receive the theme, including components derived through `extend()`, `attrs()`, `withComponent()` and `withChild()`.
+- An explicitly passed `theme` prop overrides the context value.
+- The `theme` prop is never forwarded to the underlying component (the default `omitProps`).
+- Static-styled components never subscribe to the context, so a theme change does not re-render them.
+- Without a provider nothing changes: style functions receive their props exactly as before.
+- `useTheme()` reads the theme from any component, and the raw `ThemeContext` is exported too.
 
 ### Extending styles
 
